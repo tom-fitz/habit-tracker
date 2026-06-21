@@ -36,7 +36,7 @@ export function generateWeekGrid(today: string): (string | null)[][] {
   const endDate = new Date(today + 'T00:00:00')
 
   const startDate = new Date(endDate)
-  startDate.setDate(startDate.getDate() - 363)
+  startDate.setDate(startDate.getDate() - 89)
 
   // Align grid start to the nearest preceding Sunday
   const gridStart = new Date(startDate)
