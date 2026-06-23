@@ -4,7 +4,7 @@ export function useSwipe(
   onSwipeLeft: () => void,
   onSwipeRight: () => void,
   threshold = 40,
-): RefObject<HTMLDivElement> {
+): RefObject<HTMLDivElement | null> {
   const ref = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
   const onSwipeLeftRef = useRef(onSwipeLeft)
