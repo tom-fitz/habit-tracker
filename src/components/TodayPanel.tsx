@@ -1,7 +1,7 @@
 import type { Dispatch } from 'react'
 import type { Completions, Action } from '../reducer'
 import { HABITS } from '../habits'
-import { HabitCard } from './HabitCard'
+import { GoalCard } from './GoalCard'
 
 interface TodayPanelProps {
   completions: Completions
@@ -17,13 +17,11 @@ export function TodayPanel({ completions, today, dispatch }: TodayPanelProps) {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {HABITS.map((habit) => (
-          <HabitCard
+          <GoalCard
             key={habit.id}
-            id={habit.id}
             label={habit.label}
             completed={completions[habit.id][today] ?? false}
-            today={today}
-            dispatch={dispatch}
+            onToggle={() => dispatch({ type: 'TOGGLE_HABIT', habitId: habit.id, date: today })}
           />
         ))}
       </div>

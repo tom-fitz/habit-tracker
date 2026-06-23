@@ -1,20 +1,14 @@
-import type { Dispatch } from 'react'
-import type { Action } from '../reducer'
-import type { HabitId } from '../habits'
-
-interface HabitCardProps {
-  id: HabitId
+interface GoalCardProps {
   label: string
   completed: boolean
-  today: string
-  dispatch: Dispatch<Action>
+  onToggle: () => void
 }
 
-export function HabitCard({ id, label, completed, today, dispatch }: HabitCardProps) {
+export function GoalCard({ label, completed, onToggle }: GoalCardProps) {
   return (
     <button
       type="button"
-      onClick={() => dispatch({ type: 'TOGGLE_HABIT', habitId: id, date: today })}
+      onClick={onToggle}
       className={`flex items-center gap-3 p-4 rounded-xl border w-full text-left transition-all ${
         completed
           ? 'bg-green-950 border-green-700 text-green-300'

@@ -64,3 +64,47 @@ export function generateWeekGrid(today: string): (string | null)[][] {
 
   return weeks
 }
+
+// Returns YYYY-MM-DD of the Sunday that starts the week containing today.
+export function getWeekKey(today: string): string {
+  const date = new Date(today + 'T00:00:00')
+  date.setDate(date.getDate() - date.getDay()) // rewind to Sunday
+  return localDateString(date)
+}
+
+// Returns the number of consecutive fully-completed weeks ending at (or before) the week
+// containing today. "Fully completed" means every WEEKLY_GOALS entry has true for that weekKey.
+export function computeWeeklyStreak(
+  weeklyCompletions: Record<string, Record<string, boolean>>,
+  goalIds: string[],
+  today: string,
+): number {
+  // Build the key for the week containing `today` and walk backward
+  const cursor = new Date(today + 'T00:00:00')
+  cursor.setDate(cursor.getDate() - cursor.getDay()) // rewind to Sunday
+
+  // If the current week isn't fully done, start counting from the week before
+  const isWeekComplete = (sunday: Date) => {
+    const key = localDateString(sunday)
+    return goalIds.every(id => weeklyCompletions[id]?.[key] === true)
+  }
+
+  if (!isWeekComplete(cursor)) {
+    cursor.setDate(cursor.getDate() - 7)
+  }
+
+  let streak = 0
+  while (isWeekComplete(cursor)) {
+    streak++
+    cursor.setDate(cursor.getDate() - 7)
+  }
+  return streak
+}
+
+// Returns YYYY-MM
+export function getMonthKey(today: string): string {
+  const date = new Date(today + 'T00:00:00')
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  return `${y}-${m}`
+}
